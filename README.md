@@ -12,10 +12,24 @@ Below are the steps to be followed to deploy complete application with microserv
 `docker-compose config`
 3. Run below command to start containerization & running process:
 `docker-compose up -d --env-file .env`
+4. Once the services are running, use the above endpoints to verify the functionality.
+
+## Basic troubleshooting tips
+You can find basic issues with syntax using below commands:
+1. For validating Dockerfile:
+`docker build --check .`
+2. Validating docker compose configurations:
+`docker-compose config`
+
+You can get inside a running container to check logs if any issue arises with a particular container
+`docker exec -it <your-container-name> sh`
+
+## SCREENSHOTS
+Refer to file: ScreenshotsWithGitRepo.docx in root directory
 
 ---
 
-## Services and Endpoints
+## Services and Endpoints to test
 
 ### **User Service**
 - **Base URL:** `http://localhost:3000`
@@ -65,14 +79,4 @@ Below are the steps to be followed to deploy complete application with microserv
     ```
     curl http://localhost:3003/api/orders
     ```
-
 ---
-
-## Instructions
-1. Start all services using the `docker-compose` file:
-   ```
-   docker-compose up
-   ```
-2. Once the services are running, use the above endpoints to verify the functionality.
-
-Happy testing!
