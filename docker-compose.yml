@@ -1,0 +1,84 @@
+services:
+  order-service:
+    container_name: ${ORDER_SERVICE_HOST}
+    build: 
+      context: ./Microservices/order-service
+      args:
+        ORDER_SERVICE_PORT: ${ORDER_SERVICE_PORT}
+    ports:
+      - ${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}
+    environment:
+      - ORDER_SERVICE_PORT=${ORDER_SERVICE_PORT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${ORDER_SERVICE_PORT}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  product-service:
+    container_name: ${PRODUCT_SERVICE_HOST}
+    build: 
+      context: ./Microservices/product-service
+      args:
+        PRODUCT_SERVICE_PORT: ${PRODUCT_SERVICE_PORT}
+    ports:
+      - ${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}
+    environment:
+      - PRODUCT_SERVICE_PORT=${PRODUCT_SERVICE_PORT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PRODUCT_SERVICE_PORT}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  user-service:
+    container_name: ${USER_SERVICE_HOST}
+    build: 
+      context: ./Microservices/user-service
+      args:
+        USER_SERVICE_PORT: ${USER_SERVICE_PORT}
+    ports:
+      - ${USER_SERVICE_PORT}:${USER_SERVICE_PORT}
+    environment:
+      - USER_SERVICE_PORT=${USER_SERVICE_PORT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${USER_SERVICE_PORT}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  gateway-service:
+    container_name: ${GATEWAY_SERVICE_HOST}
+    build: 
+      context: ./Microservices/gateway-service
+      args:
+        GATEWAY_SERVICE_PORT: ${GATEWAY_SERVICE_PORT}
+    ports:
+      - ${PORT}:${GATEWAY_SERVICE_PORT}
+    env_file:
+      - .env
+    networks:
+      - microservices-network
+    depends_on:
+      - order-service
+      - product-service
+      - user-service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+networks:
+  microservices-network:
+    driver: bridge
