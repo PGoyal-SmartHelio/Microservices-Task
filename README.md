@@ -3,6 +3,16 @@
 ## Overview
 This document provides details on testing various services after running the `docker-compose` file. These services include User, Product, Order, and Gateway Services. Each service has its own endpoints for testing purposes.
 
+
+## Deployment steps 
+Below are the steps to be followed to deploy complete application with microservices
+
+1. Create an .env file in the root directory (same as in docker-compose config), referring to .env.sample for available variables.
+2. Run below command to validate if the docker config is correct:
+`docker-compose config`
+3. Run below command to start containerization & running process:
+`docker-compose up -d --env-file .env`
+
 ---
 
 ## Services and Endpoints
