@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.USER_SERVICE_PORT;
 
 app.get('/health', (req, res) => {
   res.json({ status: 'User Service is healthy' });
